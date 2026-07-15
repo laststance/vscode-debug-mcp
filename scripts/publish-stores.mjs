@@ -39,7 +39,13 @@ function run(command, args) {
 
   const result = spawnSync(command, args, {
     stdio: "inherit",
-    env: process.env,
+    env: {
+      ...process.env,
+      // Node's bundled CA store cannot build the chain for the Marketplace
+      // upload endpoint (Microsoft TLS G2 intermediates require AIA chasing);
+      // the macOS system keychain can — verified 2026-07-15.
+      NODE_OPTIONS: [process.env.NODE_OPTIONS, "--use-system-ca"].filter(Boolean).join(" "),
+    },
   });
 
   if (result.status !== 0) {
