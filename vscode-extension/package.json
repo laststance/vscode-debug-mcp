@@ -1,0 +1,70 @@
+{
+  "name": "vscode-debug-mcp-bridge",
+  "displayName": "Debug MCP Bridge",
+  "description": "Let AI agents control the VS Code debugger — exposes breakpoints, stepping, and runtime inspection over a local HTTP bridge for MCP integration",
+  "version": "0.1.0",
+  "publisher": "laststance",
+  "license": "MIT",
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": ["Debuggers", "AI"],
+  "keywords": [
+    "mcp",
+    "model context protocol",
+    "debugger",
+    "ai",
+    "agent",
+    "breakpoint",
+    "claude",
+    "cursor",
+    "codex"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/laststance/vscode-debug-mcp.git",
+    "directory": "vscode-extension"
+  },
+  "bugs": {
+    "url": "https://github.com/laststance/vscode-debug-mcp/issues"
+  },
+  "homepage": "https://github.com/laststance/vscode-debug-mcp#readme",
+  "activationEvents": ["onStartupFinished"],
+  "main": "./dist/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "debugMcpBridge.start",
+        "title": "Debug MCP Bridge: Start Server"
+      },
+      {
+        "command": "debugMcpBridge.stop",
+        "title": "Debug MCP Bridge: Stop Server"
+      }
+    ],
+    "configuration": {
+      "title": "Debug MCP Bridge",
+      "properties": {
+        "debugMcpBridge.port": {
+          "type": "number",
+          "default": 7779,
+          "description": "Port for the HTTP bridge server"
+        }
+      }
+    }
+  },
+  "scripts": {
+    "compile": "tsc -p ./",
+    "build": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "typecheck": "tsc -p ./ --noEmit",
+    "vscode:prepublish": "pnpm run compile",
+    "package": "vsce package --no-dependencies"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.0",
+    "@types/vscode": "^1.85.0",
+    "@vscode/vsce": "^3.9.2",
+    "typescript": "^5.5.0"
+  }
+}

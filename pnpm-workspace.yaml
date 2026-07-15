@@ -1,0 +1,10 @@
+packages:
+  - vscode-extension
+  - mcp-server
+
+# vsce-sign needs its postinstall (marketplace signing). keytar is only used by
+# `vsce login` credential storage — we publish with VSCE_PAT, so skip its
+# node-gyp build (it fails on recent Node and vsce degrades gracefully).
+allowBuilds:
+  '@vscode/vsce-sign': true
+  keytar: false

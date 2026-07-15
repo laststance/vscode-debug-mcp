@@ -1,0 +1,7 @@
+src/**
+node_modules/**
+tsconfig.json
+pnpm-lock.yaml
+dist/**/*.map
+dist/**/*.d.ts
+*.vsix
