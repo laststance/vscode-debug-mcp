@@ -12,9 +12,19 @@ AI Agent ──(stdio MCP)──> MCP Server ──(HTTP 127.0.0.1:7779)──> 
 | Package | Where | What |
 |---|---|---|
 | [`laststance.vscode-debug-mcp-bridge`](vscode-extension/) | VS Code Marketplace / Open VSX | Extension exposing `vscode.debug` over a local HTTP bridge |
-| [`vscode-debug-mcp`](mcp-server/) | npm | Stdio MCP server translating MCP tool calls to bridge HTTP calls |
+| [`vscode-debug-mcp`](mcp-server/) | [npm](https://www.npmjs.com/package/vscode-debug-mcp) | Stdio MCP server translating MCP tool calls to bridge HTTP calls |
 
-Why an editor bridge instead of a standalone DAP client? The debug session lives in the user's VS Code window: breakpoints are visible, the paused file opens at the exact line, and the human can take over the Run and Debug UI at any moment. Agent and human share one debugging surface. This powers live "feature tour" walkthroughs where an agent narrates newly written code while stepping through it in a real app.
+Why an editor bridge instead of a standalone DAP client? The debug session lives in the user's VS Code window: breakpoints are visible, the paused file opens at the exact line, and the human can take over the Run and Debug UI at any moment. Agent and human share one debugging surface.
+
+## Primary use case: feature tours
+
+This toolkit is built to be used primarily with the [feature-tour](https://github.com/laststance/skills/tree/main/skills/feature-tour) agent skill, together with the [`vscode-debug-mcp`](https://www.npmjs.com/package/vscode-debug-mcp) npm package. The skill turns freshly written code into a live, runtime-verified walkthrough:
+
+1. It curates "tour stops" from a diff (branch, PR, or commit range): the mount line of a new component, its user-facing handlers, the data dispatch point.
+2. It boots the target app, drives the real UI with playwright-cli, and attaches VS Code's debugger to the same browser through this bridge — via the `vscode-debug-mcp` MCP server or plain HTTP.
+3. At each stop the editor pauses on the exact line while the agent narrates in chat what the UI just did, mapping every UI moment to a file:line, then writes a replayable Markdown tour artifact.
+
+The bridge is not tied to the skill: any agent that speaks MCP or can run `curl` gets the same debugging capabilities — see [MCP tools](#mcp-tools) and [Zero-config HTTP mode](#zero-config-http-mode).
 
 ## Setup
 
