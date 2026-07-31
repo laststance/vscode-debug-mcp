@@ -1,6 +1,10 @@
 import * as http from "node:http";
 import { DebugController } from "./debug-controller";
 
+// Read from the manifest so /health can be used to confirm which build is live
+// after reinstalling the extension.
+const { version: EXTENSION_VERSION } = require("../package.json") as { version: string };
+
 /**
  * HTTP bridge server that exposes DebugController methods as REST endpoints.
  * Runs on localhost only — never exposed externally.
@@ -68,7 +72,7 @@ export class BridgeServer {
   ): Promise<unknown> {
     // Health check
     if (url === "/health" && method === "GET") {
-      return { status: "ok", version: "0.1.0" };
+      return { status: "ok", version: EXTENSION_VERSION };
     }
 
     // Debug state
